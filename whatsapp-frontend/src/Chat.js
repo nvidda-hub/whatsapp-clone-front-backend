@@ -41,9 +41,13 @@ function Chat({messages}) {
 
       {/* start of chat body */}
       <div className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 bg-repeat bg-center p-7 overflow-auto">
-        
         {messages.map(message => {
-          <ChatMessageReciever message={{"name":"narendra vida", "message":"temp message", "timestamp":"10:38 22 JAN"}} />
+          if (message.received){
+              return (<ChatMessageReciever message={message}/>)         
+            } else {
+              
+              return (<ChatMessageSender message={message}/>)         
+          }
         })}
         
       </div>
@@ -58,7 +62,7 @@ function Chat({messages}) {
             placeholder="Type a message"
             type="text"
           />
-          <button className="hidden" onClick="{sendMessage}" type="submit">Send a message</button>
+          <button className="hidden" type="submit">Send a message</button>
         </form>
         <MicIcon className="text-gray-500 mx-1" />
       </div>
