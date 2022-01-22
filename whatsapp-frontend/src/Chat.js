@@ -2,12 +2,25 @@ import { AttachFile, InsertEmoticon, SearchOutlined } from "@material-ui/icons";
 import MoreVert from "@mui/icons-material/MoreVert";
 import { IconButton, Avatar } from "@mui/material";
 import MicIcon from '@mui/icons-material/Mic';
-import React from "react";
+import React, { useState } from "react";
 import ChatMessageReciever from "./ChatMessageReciever";
 import ChatMessageSender from "./ChatMessageSender";
+import axios from "./axios";
 
 function Chat({messages}) {
-  console.log("messages in chat : ", messages)
+  const [input, setInput] = useState('');
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+
+    await axios.post('/api/v1/messages/new', {
+        message:input,
+        name:"Narendra",
+        timestamp:"Just now",
+        received:false
+    });
+    setInput("");
+  }
   return (
     <div className="flex flex-col basis-chatbar-width">
       
@@ -58,11 +71,13 @@ function Chat({messages}) {
         <InsertEmoticon className="text-gray-500 mx-1" />
         <form className="flex-1 flex">
           <input
-            className="flex-1 rounded-3xl p-3 border-none"
+            className="flex-1 rounded-3xl p-3 border-none outline-0"
             placeholder="Type a message"
             type="text"
+            value={input}
+            onChange={e => setInput(e.target.value)}
           />
-          <button className="hidden" type="submit">Send a message</button>
+          <button className="hidden" type="submit" onClick={sendMessage}>Send a message</button>
         </form>
         <MicIcon className="text-gray-500 mx-1" />
       </div>
